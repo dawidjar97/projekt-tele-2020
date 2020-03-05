@@ -1,2 +1,6 @@
-# projekt-tele-2020
+# Projekt Telemedycyna 2020
+## Wykonywał
+Grzegorz Mrózek
+Dawid Jaraczewski
+
 Robimy projekt tu
