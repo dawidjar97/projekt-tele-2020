@@ -4,4 +4,6 @@ Grzegorz Mrózek
 
 Dawid Jaraczewski
 
-Robimy projekt tu
+## Założenia Projektowe
+
+## Hardware
