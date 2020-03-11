@@ -1,32 +1,75 @@
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 #include <Arduino.h>
+#include <SPI.h>
+#include <Wire.h>
+#include <U8x8lib.h>
 
-/*
-  TO DO
-  1. Konfiguracja wstępna
-    1.1 Stworzenie tymczasowego AP
-    1.2 Strona konfiguracyjna
-    1.2.1 Nazwa Sieci
-    1.2.2 Hasło
-    1.2.3 (opcjonalne)
-  2. Nowy AP
-    2.1 WebSocket z danymi prosto na stronę
-    2.2 (opcjonalne) Data logger? W pamięci urządzenia można by przechowywać x danych
-    2.3 (opcjonalne) Jakieś fajny wykresik albo coś?
-  3. Przycisk RESET do fabrycznych
-    3.1 W momecie setup wykrywać czy w czasie uruchamiania przycisk zewnętrzny był wciśnięty?
-      3.1.1 Jeśli tak to wyczyścić config i wrócić do Pkt1
-    3.2. (opcjonalne) reset do fabrycznych po zalogowaniu do AP
-  4. (WISH LIST)
-    4.1. Coś jeszcze?
-*/
+Adafruit_MPU6050 mpu;
+U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
 void setup() {
   Serial.begin(9600);
-  // put your setup code here, to run once:
+
+  if (!mpu.begin()) {
+    Serial.println("Sensor init failed");
+    while (1)
+      yield();
+  }
+  Serial.println("Found a MPU-6050 sensor");
+
+  u8x8.begin();
+  u8x8.setFont(u8x8_font_pxplusibmcgathin_u);
+
+  Serial.println(mpu.getFilterBandwidth());
+  Serial.println(mpu.getGyroRange());
+  Serial.println(mpu.getCycleRate());
 }
 
+char buff[7];
+
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println("Hello world");
-  delay(1000);
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  dtostrf(a.acceleration.x, 4, 1, buff);
+  u8x8.drawString(0, 0, "X:");
+  u8x8.drawString(2, 0, buff);
+
+  dtostrf(a.acceleration.y, 4, 1, buff);
+  u8x8.drawString(0, 2, "Y:");
+  u8x8.drawString(2, 2, buff);
+
+  dtostrf(a.acceleration.z, 4, 1, buff);
+  u8x8.drawString(0, 4, "Z:");
+  u8x8.drawString(2, 4, buff);
+  
+  dtostrf(g.gyro.x, 4, 1, buff);
+  u8x8.drawString(8, 0, "X:");
+  u8x8.drawString(10, 0, buff);
+  
+  dtostrf(g.gyro.y, 4, 1, buff);
+  u8x8.drawString(8, 2, "Y:");
+  u8x8.drawString(10, 2, buff);
+
+  dtostrf(g.gyro.z, 4, 1, buff);
+  u8x8.drawString(8, 4, "Z:");
+  u8x8.drawString(10, 4, buff);
+
+  double roll = atan2(a.acceleration.y , a.acceleration.z) * 57.3;
+  double pitch = atan2((- a.acceleration.x) , sqrt(a.acceleration.y * a.acceleration.y + a.acceleration.z * a.acceleration.z)) * 57.3;
+
+  // Serial.print("ROLL: ");
+  // Serial.println(roll);
+  // Serial.print("PICZ: ");
+  // Serial.println(pitch);
+
+  dtostrf(roll, 4, 1, buff);
+  u8x8.drawString(0, 6, "P:");
+  u8x8.drawString(2, 6, "     ");
+  u8x8.drawString(2, 6, buff);
+  dtostrf(pitch, 4, 1, buff);
+  u8x8.drawString(8, 6, "R:");
+  u8x8.drawString(10, 6, "     "); 
+  u8x8.drawString(10, 6, buff);
 }

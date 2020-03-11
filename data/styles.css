@@ -1,0 +1,119 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', 'Ubuntu', 'Open sans', 'Lato', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+}
+
+body {
+    background: radial-gradient(100% 100% at 0% 0%, #1E9AD7 3.82%, #004E8F 100%);
+    display: flex;
+    background-size: cover;
+}
+
+div.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 620px 1fr;
+    margin: auto;
+}
+
+h1, p, a {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    margin: auto;
+}
+
+div.main-box {
+    height: 500px;
+    background: #FCFCFC;
+    border: 1px solid #797979;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 51px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    text-align: center;
+    padding: 32px;
+
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    grid-gap: 8px;
+}
+
+h1 {
+    font-family: 'Ubuntu', 'Segoe UI', 'Montserrat', sans-serif;
+    font-size: 56px;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    color: #313131;
+}
+
+div.main-box > p {
+    font-size: 14px;
+    color: #797979;
+}
+
+img.car {
+    display: block;
+    width: 240px;
+    height: 240px;
+}
+
+div.btn > a > img {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+}
+
+div.btn > p {
+    font-size: 14px;
+    color: #313131;
+}
+
+ol {
+    margin: 24px 0 0 36px;
+    padding: 0;
+    list-style: none;
+    counter-reset: ol-counter;
+}
+
+ol li::before {
+    content: counter(ol-counter);
+    position: absolute;
+    left: 0;
+    width: 52px;
+    height: 52px;
+    background: #FCFCFC;
+    border: 2px solid #797979;
+    color: #797979;
+    text-align: center;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    box-sizing: border-box;
+    line-height: 24px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+}
+
+li {
+    counter-increment: ol-counter;
+    position: relative;
+    padding-left: 48px;
+    color: #FDFDFD;
+    font-size: 24px;
+    text-transform: uppercase;
+    counter-increment: ol-counter;
+    position: relative;
+    padding-left: 69px;
+    color: #FDFDFD;
+    font-size: 24px;
+    text-transform: uppercase;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 18px;
+}
