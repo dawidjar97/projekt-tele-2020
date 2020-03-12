@@ -1,75 +1,51 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Arduino.h>
-#include <SPI.h>
 #include <Wire.h>
-#include <U8x8lib.h>
+#include <SPIFFS.h>
+#include <ESPAsyncWebServer.h>
+#include "mpu6050.h"
 
-Adafruit_MPU6050 mpu;
-U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
-void setup() {
+MPU6050 mpu;
+AsyncWebServer server(80);
+AsyncWebSocket ws("/ws");
+
+const char* ssid = "ESP32";
+const char* pass = "";
+
+void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+  //Handle WebSocket event
+}
+
+void setup()
+{
   Serial.begin(9600);
 
-  if (!mpu.begin()) {
+  if (!mpu.begin())
+  {
     Serial.println("Sensor init failed");
     while (1)
       yield();
   }
-  Serial.println("Found a MPU-6050 sensor");
+  
+  SPIFFS.begin();
+  WiFi.softAP(ssid, pass);
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(IP);
 
-  u8x8.begin();
-  u8x8.setFont(u8x8_font_pxplusibmcgathin_u);
+  ws.onEvent(onEvent);
+  server.addHandler(&ws);
 
-  Serial.println(mpu.getFilterBandwidth());
-  Serial.println(mpu.getGyroRange());
-  Serial.println(mpu.getCycleRate());
+  server.serveStatic("/", SPIFFS, "/");
+  server.begin();
 }
 
-char buff[7];
-
-void loop() {
-  sensors_event_t a, g, temp;
-  mpu.getEvent(&a, &g, &temp);
-
-  dtostrf(a.acceleration.x, 4, 1, buff);
-  u8x8.drawString(0, 0, "X:");
-  u8x8.drawString(2, 0, buff);
-
-  dtostrf(a.acceleration.y, 4, 1, buff);
-  u8x8.drawString(0, 2, "Y:");
-  u8x8.drawString(2, 2, buff);
-
-  dtostrf(a.acceleration.z, 4, 1, buff);
-  u8x8.drawString(0, 4, "Z:");
-  u8x8.drawString(2, 4, buff);
-  
-  dtostrf(g.gyro.x, 4, 1, buff);
-  u8x8.drawString(8, 0, "X:");
-  u8x8.drawString(10, 0, buff);
-  
-  dtostrf(g.gyro.y, 4, 1, buff);
-  u8x8.drawString(8, 2, "Y:");
-  u8x8.drawString(10, 2, buff);
-
-  dtostrf(g.gyro.z, 4, 1, buff);
-  u8x8.drawString(8, 4, "Z:");
-  u8x8.drawString(10, 4, buff);
-
-  double roll = atan2(a.acceleration.y , a.acceleration.z) * 57.3;
-  double pitch = atan2((- a.acceleration.x) , sqrt(a.acceleration.y * a.acceleration.y + a.acceleration.z * a.acceleration.z)) * 57.3;
-
-  // Serial.print("ROLL: ");
-  // Serial.println(roll);
-  // Serial.print("PICZ: ");
-  // Serial.println(pitch);
-
-  dtostrf(roll, 4, 1, buff);
-  u8x8.drawString(0, 6, "P:");
-  u8x8.drawString(2, 6, "     ");
-  u8x8.drawString(2, 6, buff);
-  dtostrf(pitch, 4, 1, buff);
-  u8x8.drawString(8, 6, "R:");
-  u8x8.drawString(10, 6, "     "); 
-  u8x8.drawString(10, 6, buff);
+void loop()
+{
+  mpu.readData();
+  MPU6050_Data data = mpu.getCurrent();
+  ws.printfAll("{ \"aX\": %f, \"aY\": %f, \"aZ\": %f }", data.ax, data.ay, data.az);
+  delay(200);
 }
