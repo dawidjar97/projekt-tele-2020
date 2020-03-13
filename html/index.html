@@ -5,24 +5,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/styles.css">
         <title>ESP32 Dev Index</title>
+        <script src="https://unpkg.com/konva@4.0.0/konva.min.js"></script>
     </head>
     <body>
-        <div class="wrapper">
-            <span></span>
-            <div class="main-box">
-                <h1>Witaj!</h1>
-                <p>Ten kreator przeprowadzi cię przez proces konfiguracji urządzenia</p>
-                <img class="car" src="/car_icon.svg">
-                <div class="btn">
-                    <a href="#"><img src="/next.svg"></a>
-                    <p>Przejdź dalej</p>
+        <div class="main-box">
+            <h1>Konfiguracja</h1>
+            <p>Potrzebujemy od ciebie kilka informacji wymaganych do konfiguracji urządzenia</p>
+            <form>
+                <div class="form-row">
+                    <div class="form-element">
+                        <label for="wifi-name">Nazwa Sieci</label>
+                        <input type="text" name="wifi-name" value="ESP32 MyWifi">
+                    </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-element">
+                        <label for="wifi-name">Hasło</label>
+                        <input type="password" name="wifi-name" value="ESP32 MyWifi">
+                    </div>
+                    <div class="form-element">
+                        <label for="wifi-name">Powtórz Hasło</label>
+                        <input type="password" name="wifi-name" value="ESP32 MyWifi">
+                    </div>
+                </div>
+            </form>
+            <div class="btn">
+                <a href="#"><img src="/next.svg"></a>
+                <p>Zapisz</p>
             </div>
-            <ol>
-                <li>Witaj!</li>
-                <li>Konfiguracja</li>
-                <li>Zapis ustawień</li>
-            </ol>
         </div>
     </body>
 </html>

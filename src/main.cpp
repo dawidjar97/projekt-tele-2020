@@ -15,7 +15,7 @@ const char* ssid = "ESP32";
 const char* pass = "";
 
 void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
-  //Handle WebSocket event
+  //Handle WebSocket event Client -> Server
 }
 
 void setup()
@@ -40,12 +40,26 @@ void setup()
 
   server.serveStatic("/", SPIFFS, "/");
   server.begin();
+
+  
+
+  Serial.print("float: "); Serial.println((int)sizeof(float));
+  Serial.print("word: "); Serial.println((int)sizeof(word));
 }
 
 void loop()
 {
   mpu.readData();
   MPU6050_Data data = mpu.getCurrent();
-  ws.printfAll("{ \"aX\": %f, \"aY\": %f, \"aZ\": %f }", data.ax, data.ay, data.az);
-  delay(200);
+  // ws.printfAll("{ \"pitch\": %f, \"roll\": %f }", data.pitch, data.roll);
+
+
+  Serial.print("1: ");
+
+  int pitch = data.pitch * 100;
+  uint8_t arr[4] = { (pitch >> 0) & 0xFF, (pitch >> 8) & 0xFF, (pitch >> 16) & 0xFF, (pitch >> 24) & 0xFF};
+  Serial.println( pitch );  
+  ws.binaryAll(arr, 4);
+
+  delay(60);
 }
