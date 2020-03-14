@@ -22,7 +22,8 @@ img {
 
 div.main-box {
     margin: auto;
-    height: 500px;
+    /* height: 500px; */
+    width: 560px;
     background: #FCFCFC;
     border: 1px solid #797979;
     box-sizing: border-box;
@@ -104,4 +105,69 @@ form > div.form-row > div.form-element > input {
     width: 200px;
     padding: 6px;
     box-sizing: border-box;
+}
+
+/* READY */
+
+div.main-box > div.ready-box > img.ready {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 16px auto;
+}
+
+div.main-box > div.ready-box > p.light {
+    color: #797979;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+div.main-box > div.ready-box > p.dark {
+    color: #313131;
+    font-weight: 600;
+}
+
+p.device_name {
+    color: #797979;
+}
+
+div.main-box > div.ready-box > p.device_name > a {
+    color: #313131;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 610px) {
+    div.main-box {
+        width: calc(100vw - 32px);
+        min-width: 300px;
+        padding: 16px 32px;
+    }
+
+    h1 {
+        font-size: 32px;
+        text-align: left;
+    }
+
+    div.main-box > p {
+        text-align: left;
+    }
+
+    form > div.form-row {
+        flex-direction: column;
+        margin: 0;
+    }
+    
+    form > div.form-row > div.form-element {
+        margin: 8px 0;
+    }
+
+    form > div.form-row > div.form-element > input {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 480px) and (max-width: 610px) {
+    h1 {
+        font-size: 40px;
+    }
 }
