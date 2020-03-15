@@ -1,6 +1,5 @@
 #include "configurator.h"
 
-
 void deleteFile(fs::FS &fs, const char * path)//to potem sie wywali do jakeigos cpp
 {
     Serial.printf("Deleting file: %s\r\n", path);
@@ -13,7 +12,7 @@ void deleteFile(fs::FS &fs, const char * path)//to potem sie wywali do jakeigos 
     }
 }
 
-void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &pass)
+void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &passwd)
 {
     
     File file = fs.open(path);
@@ -42,7 +41,7 @@ void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &pass)
     {
         char sign;
         ssid="";
-        pass="";
+        passwd="";
 
         Serial.println("Read from file:");
 
@@ -58,9 +57,9 @@ void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &pass)
             sign=file.read();
             //Serial.write(sign);
             if(sign!='\n')
-                pass+=sign;
+                passwd+=sign;
         } while (file.available() && sign!='\n');
     }
     Serial.println("SSID: "+ssid);
-    Serial.println("PASS: "+pass);
+    Serial.println("PASS: "+passwd);
 }

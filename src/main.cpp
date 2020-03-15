@@ -11,11 +11,9 @@
 Adafruit_MPU6050 mpu;
 U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
-
 //Config start
-
 String ssid = "ESP32";
-String pass = "test";
+String passwd = "test";
 const char* path = "/cfg.xd";
 #define FORMAT_SPIFFS_IF_FAILED true
 
@@ -25,8 +23,7 @@ void setup() {
     if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
         Serial.println("SPIFFS Mount Failed");
     else
-        configurationLoad(SPIFFS,path,ssid,pass);
-    
+        configurationLoad(SPIFFS,path,ssid,passwd);
     //config stop
     //Do usunięcia configu przycisk wywołujący: deleteFile(SPIFFS, path);
 
