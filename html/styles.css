@@ -136,6 +136,14 @@ div.main-box > div.ready-box > p.device_name > a {
     font-weight: 600;
 }
 
+/* CANVAS */
+
+div#canvas-box {
+    width: 100vw;
+    height: 100vh;
+    background: #FFF;
+}
+
 @media screen and (max-width: 610px) {
     div.main-box {
         width: calc(100vw - 32px);

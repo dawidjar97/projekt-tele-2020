@@ -6,15 +6,9 @@ html, body {
 }
 
 body {
-    background: radial-gradient(100% 100% at 0% 0%, #1E9AD7 3.82%, #004E8F 100%);
+    background: radial-gradient(100% 100% at 0% 0%, #ECEEFF 3.82%, #C1EDFF 100%);
     display: flex;
     background-size: cover;
-}
-
-div.wrapper {
-    display: grid;
-    grid-template-columns: 1fr 620px 1fr;
-    margin: auto;
 }
 
 h1, p, a {
@@ -27,7 +21,9 @@ img {
 }
 
 div.main-box {
-    height: 500px;
+    margin: auto;
+    /* height: 500px; */
+    width: 560px;
     background: #FCFCFC;
     border: 1px solid #797979;
     box-sizing: border-box;
@@ -72,48 +68,114 @@ div.btn > p {
     color: #313131;
 }
 
-ol {
-    margin: 24px 0 0 36px;
-    padding: 0;
-    list-style: none;
-    counter-reset: ol-counter;
+/* CONFIG */
+
+form {
+    display: block;
 }
 
-ol li::before {
-    content: counter(ol-counter);
-    position: absolute;
-    left: 0;
-    width: 52px;
-    height: 52px;
-    background: #FCFCFC;
-    border: 2px solid #797979;
+form > div.form-row {
+    display: flex;
+    flex-direction: row;
+    margin: 16px 0;
+}
+
+form > div.form-row > div.form-element {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 auto;
+}
+
+form > div.form-row > div.form-element > label {
     color: #797979;
-    text-align: center;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    box-sizing: border-box;
-    line-height: 24px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    margin: 6px 0 0 6px;
 }
 
-li {
-    counter-increment: ol-counter;
-    position: relative;
-    padding-left: 48px;
-    color: #FDFDFD;
-    font-size: 24px;
-    text-transform: uppercase;
-    counter-increment: ol-counter;
-    position: relative;
-    padding-left: 69px;
-    color: #FDFDFD;
-    font-size: 24px;
-    text-transform: uppercase;
-    height: 54px;
-    display: flex;
-    align-items: center;
-    margin: 0 0 18px;
+form > div.form-row > div.form-element > input {
+    background: inherit;
+    outline: none;
+    border: 0;
+    border-bottom: 1px solid #797979;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #313131;
+    width: 200px;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+/* READY */
+
+div.main-box > div.ready-box > img.ready {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 16px auto;
+}
+
+div.main-box > div.ready-box > p.light {
+    color: #797979;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+div.main-box > div.ready-box > p.dark {
+    color: #313131;
+    font-weight: 600;
+}
+
+p.device_name {
+    color: #797979;
+}
+
+div.main-box > div.ready-box > p.device_name > a {
+    color: #313131;
+    font-weight: 600;
+}
+
+/* CANVAS */
+
+div#canvas-box {
+    width: 100vw;
+    height: 100vh;
+    background: #FFF;
+}
+
+@media screen and (max-width: 610px) {
+    div.main-box {
+        width: calc(100vw - 32px);
+        min-width: 300px;
+        padding: 16px 32px;
+    }
+
+    h1 {
+        font-size: 32px;
+        text-align: left;
+    }
+
+    div.main-box > p {
+        text-align: left;
+    }
+
+    form > div.form-row {
+        flex-direction: column;
+        margin: 0;
+    }
+    
+    form > div.form-row > div.form-element {
+        margin: 8px 0;
+    }
+
+    form > div.form-row > div.form-element > input {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 480px) and (max-width: 610px) {
+    h1 {
+        font-size: 40px;
+    }
 }

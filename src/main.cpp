@@ -41,25 +41,22 @@ void setup()
   server.serveStatic("/", SPIFFS, "/");
   server.begin();
 
-  
-
-  Serial.print("float: "); Serial.println((int)sizeof(float));
-  Serial.print("word: "); Serial.println((int)sizeof(word));
 }
 
 void loop()
 {
   mpu.readData();
   MPU6050_Data data = mpu.getCurrent();
-  // ws.printfAll("{ \"pitch\": %f, \"roll\": %f }", data.pitch, data.roll);
-
-
-  Serial.print("1: ");
 
   int pitch = data.pitch * 100;
-  uint8_t arr[4] = { (pitch >> 0) & 0xFF, (pitch >> 8) & 0xFF, (pitch >> 16) & 0xFF, (pitch >> 24) & 0xFF};
-  Serial.println( pitch );  
-  ws.binaryAll(arr, 4);
+  int roll = data.roll * 100;
+
+  uint8_t arr[8] = { 
+    (pitch >> 0) & 0xFF, (pitch >> 8) & 0xFF, (pitch >> 16) & 0xFF, (pitch >> 24) & 0xFF,
+    (roll >> 0) & 0xFF, (roll >> 8) & 0xFF, (roll >> 16) & 0xFF, (roll >> 24) & 0xFF
+    };
+
+  ws.binaryAll(arr, 8);
 
   delay(60);
 }
