@@ -10,6 +10,9 @@
 Adafruit_MPU6050 mpu;
 U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
 
+
+//Config start
+
 String ssid = "ESP32";
 String pass = "test";
 const char* path = "/cfg.xd";
@@ -29,7 +32,7 @@ void deleteFile(fs::FS &fs, const char * path)//to potem sie wywali do jakeigos 
 }
 
 void setup() {
-  Serial.begin(9600);
+    Serial.begin(9600);
     if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
     {
         Serial.println("SPIFFS Mount Failed");
@@ -83,6 +86,8 @@ void setup() {
     Serial.println("SSID: "+ssid);
     Serial.println("PASS: "+pass);
     //deleteFile(SPIFFS, path);
+    
+    //config stop
 
   if (!mpu.begin()) {
     Serial.println("Sensor init failed");
