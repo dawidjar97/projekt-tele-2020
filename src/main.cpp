@@ -6,6 +6,7 @@
 #include <U8x8lib.h>
 #include "FS.h"
 #include "SPIFFS.h"
+#include "configurator.h"
 
 Adafruit_MPU6050 mpu;
 U8X8_SH1106_128X64_NONAME_HW_I2C u8x8(U8X8_PIN_NONE);
@@ -18,76 +19,16 @@ String pass = "test";
 const char* path = "/cfg.xd";
 #define FORMAT_SPIFFS_IF_FAILED true
 
-
-void deleteFile(fs::FS &fs, const char * path)//to potem sie wywali do jakeigos cpp
-{
-    Serial.printf("Deleting file: %s\r\n", path);
-    if(fs.remove(path))
-    {
-        Serial.println("- file deleted");
-    } else 
-    {
-        Serial.println("- delete failed");
-    }
-}
-
 void setup() {
     Serial.begin(9600);
+
     if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
-    {
         Serial.println("SPIFFS Mount Failed");
-        return;
-    }
-    File file = SPIFFS.open(path);
-    if(!file || file.isDirectory()) //Write cfg file
-    {
-        Serial.println("Failed to open file for reading");
-        Serial.println("Making new cfg file");
-        file = SPIFFS.open(path, FILE_WRITE);
-        if(!file)
-        {
-            Serial.println("Failed to open file for writing");
-        }
-        else
-        {
-          if(file.print("Moje super Wiffi\n123456789\n"))
-          {
-              Serial.println("File written");
-          }
-          else 
-          {
-              Serial.println("Write failed");
-          }
-        }
-    }
-    else  //Read cfg file
-    {
-        char sign;
-        ssid="";
-        pass="";
-
-        Serial.println("Read from file:");
-
-        while(file.available() && sign!='\n') /* SSID */
-        {
-            sign=file.read();
-            //Serial.write(sign);
-            if(sign!='\n')
-                ssid+=sign;
-        }
-        do /* Password */
-        {
-            sign=file.read();
-            //Serial.write(sign);
-            if(sign!='\n')
-                pass+=sign;
-        } while (file.available() && sign!='\n');
-    }
-    Serial.println("SSID: "+ssid);
-    Serial.println("PASS: "+pass);
-    //deleteFile(SPIFFS, path);
+    else
+        configurationLoad(SPIFFS,path,ssid,pass);
     
     //config stop
+    //Do usunięcia configu przycisk wywołujący: deleteFile(SPIFFS, path);
 
   if (!mpu.begin()) {
     Serial.println("Sensor init failed");
