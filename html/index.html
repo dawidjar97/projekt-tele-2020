@@ -4,25 +4,14 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/styles.css">
-        <title>ESP32 Dev Index</title>
+        <title>Gotowe</title>
+        <script src="konva.min.js"></script>
     </head>
     <body>
-        <div class="wrapper">
-            <span></span>
-            <div class="main-box">
-                <h1>Witaj!</h1>
-                <p>Ten kreator przeprowadzi cię przez proces konfiguracji urządzenia</p>
-                <img class="car" src="/car_icon.svg">
-                <div class="btn">
-                    <a href="#"><img src="/next.svg"></a>
-                    <p>Przejdź dalej</p>
-                </div>
-            </div>
-            <ol>
-                <li>Witaj!</li>
-                <li>Konfiguracja</li>
-                <li>Zapis ustawień</li>
-            </ol>
+        <div class="main-box no-gap">
+            <div class="box" id="pitch-box"></div>
+            <div class="box" id="roll-box"></div>
         </div>
     </body>
+    <script src="canvas.js"></script>
 </html>
