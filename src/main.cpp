@@ -39,7 +39,7 @@ void setup()
   }
   
   //SPIFFS.begin();
-  WiFi.softAP(ssid, pass);
+  WiFi.softAP(ssid.c_str(), passwd.c_str());
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
