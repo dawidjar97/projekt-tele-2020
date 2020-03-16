@@ -59,8 +59,8 @@ class MPU6050
             current.roll = atan2(current.ay, current.az) * RAD_TO_DEG;
 
             //Filtr 
-            current.roll = 0.93 * current.roll + 0.07 * previous.roll;
-            current.pitch = 0.93 * current.pitch + 0.07 * previous.pitch;
+            current.roll = 0.85 * current.roll + 0.15 * previous.roll;
+            current.pitch = 0.85 * current.pitch + 0.15 * previous.pitch;
         }
 
         const MPU6050_Data & getCurrent() {

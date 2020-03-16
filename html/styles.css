@@ -34,7 +34,7 @@ div.main-box {
 
     display: grid;
     grid-template-rows: auto auto 1fr auto;
-    grid-gap: 8px;
+    gap: 8px;
 }
 
 h1 {
@@ -138,10 +138,28 @@ div.main-box > div.ready-box > p.device_name > a {
 
 /* CANVAS */
 
-div#canvas-box {
-    width: 100vw;
-    height: 100vh;
-    background: #FFF;
+div.no-gap {
+    gap: 0;
+    grid-template-columns: auto auto;
+}
+
+@media screen and (max-width: 540px) {
+    div.no-gap {
+        grid-template-columns: auto;
+        gap: 0;
+    }
+
+    div.no-gap > div.box:first-child {
+        margin-bottom: 16px;
+    }
+
+    div.no-gap > div.box:last-child {
+        margin-top: 16px;
+    }
+}
+
+div.box {
+    margin: auto;
 }
 
 @media screen and (max-width: 610px) {

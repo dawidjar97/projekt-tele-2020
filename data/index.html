@@ -8,84 +8,10 @@
         <script src="konva.min.js"></script>
     </head>
     <body>
-        <div id="canvas-box">
+        <div class="main-box no-gap">
+            <div class="box" id="pitch-box"></div>
+            <div class="box" id="roll-box"></div>
         </div>
     </body>
-    <script>
-        const el = document.getElementById('canvas-box');
-        console.log(el.clientWidth, el.clientHeight);
-
-        var stage = new Konva.Stage({
-            container: 'canvas-box',   // id of container <div>
-            width: el.clientWidth,
-            height: el.clientHeight
-        });
-
-        var labelPitch = new Konva.Text({
-            x: stage.width() / 2 - 40,
-            y: stage.height() / 2 - 40,
-            text: 'Pitch:',
-            fontSize: 30,
-            fontFamily: 'Montserrat',
-            fill: 'black'
-        });
-
-        labelPitch.offsetX(labelPitch.width() / 2);
-        labelPitch.offsetY(labelPitch.height() / 2);
-
-        var labelRoll = new Konva.Text({
-            x: stage.width() / 2 - 40,
-            y: stage.height() / 2 + 40,
-            text: 'Roll:',
-            fontSize: 30,
-            fontFamily: 'Montserrat',
-            fill: 'black'
-        });
-
-        labelRoll.offsetX(labelRoll.width() / 2);
-        labelRoll.offsetY(labelRoll.height() / 2);
-
-        var pitchAngle = new Konva.Text({
-            x: stage.width() / 2,
-            y: stage.height() / 2 - 40,
-            text: '0.0',
-            fontSize: 30,
-            fontFamily: 'Montserrat',
-            fill: 'black'
-        });
-
-        pitchAngle.offsetY(pitchAngle.height() / 2);
-
-        var rollAngle = new Konva.Text({
-            x: stage.width() / 2,
-            y: stage.height() / 2 + 40,
-            text: '0.0',
-            fontSize: 30,
-            fontFamily: 'Montserrat',
-            fill: 'black'
-        });
-
-        rollAngle.offsetY(rollAngle.height() / 2);
-
-        var layer = new Konva.Layer();
-
-        layer.add(labelPitch);
-        layer.add(labelRoll);
-        layer.add(pitchAngle);
-        layer.add(rollAngle);
-        stage.add(layer);
-
-        var ws = new WebSocket('ws://192.168.4.1/ws');
-        ws.binaryType = 'arraybuffer';
-        ws.onmessage = (event) => {
-            var dv = new DataView(event.data);
-            let pitch = Math.round(dv.getInt32(0, true)/10)/10;
-            let roll =  Math.round(dv.getInt32(4, true)/10)/10;
-
-            pitchAngle.setAttr('text', pitch);
-            rollAngle.setAttr('text', roll);
-
-            layer.draw();
-        }
-    </script>
+    <script src="canvas.js"></script>
 </html>
