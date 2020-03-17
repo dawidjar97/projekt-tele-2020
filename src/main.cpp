@@ -1,26 +1,35 @@
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
 #include <Arduino.h>
 #include <Wire.h>
-#include <SPIFFS.h>
 #include <ESPAsyncWebServer.h>
+#include <SPIFFS.h>
+#include "FS.h"
+#include "configurator.h"
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 #include "mpu6050.h"
-
 
 MPU6050 mpu;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
-const char* ssid = "ESP32";
-const char* pass = "";
+#define FORMAT_SPIFFS_IF_FAILED true
+String ssid = "ESP32";
+String passwd = "test";
+const char* path = "/cfg.xd";
 
 void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
   //Handle WebSocket event Client -> Server
 }
 
-void setup()
+void setup() 
 {
-  Serial.begin(9600);
+    Serial.begin(9600);
+
+    if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
+        Serial.println("SPIFFS Mount Failed");
+    else
+        configurationLoad(SPIFFS,path,ssid,passwd);
+    //Do usunięcia configu przycisk wywołujący: deleteFile(SPIFFS, path);
 
   if (!mpu.begin())
   {
@@ -29,7 +38,7 @@ void setup()
       yield();
   }
   
-  SPIFFS.begin();
+  //SPIFFS.begin();
   WiFi.softAP(ssid, pass);
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
