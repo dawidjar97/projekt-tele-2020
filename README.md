@@ -16,9 +16,9 @@
 * Więcej TODO nie pamiętam
 
 ## Wykonywał
-Grzegorz Mrózek
+* Grzegorz Mrózek
 
-Dawid Jaraczewski
+* Dawid Jaraczewski
 
 ## Założenia Projektowe
 
@@ -32,6 +32,6 @@ Accelerometr + Gyro: GY-521 MPU6050 (I2C)
 
 ## Wymagania
 
-Visual Studio Code
+* Visual Studio Code
 
-PlatformIO
+* PlatformIO
