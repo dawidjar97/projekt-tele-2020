@@ -1,4 +1,20 @@
 # Projekt Telemedycyna 2020
+## To Do:
+
+* Posprzątać kod
+
+* Testowanie w terenie czy te kąty działają jak powinny
+
+* Obudowa
+
+* Zasilanie
+
+* Zapisywanie konfiguracji
+
+* Reset konfiguracji na przycisk
+
+* Więcej TODO nie pamiętam
+
 ## Wykonywał
 Grzegorz Mrózek
 
@@ -10,6 +26,12 @@ Cyfrowy przechylomierz z interfejsem w postaci strony internetowej dostępnej z 
 
 ## Hardware
 
-uC: ESP32
+Mikrokontroler: ESP32 lub ESP8266
 
-Accelerometer + Gyro: GY-521 MPU6050
+Accelerometr + Gyro: GY-521 MPU6050 (I2C)
+
+## Wymagania
+
+Visual Studio Code
+
+PlatformIO
