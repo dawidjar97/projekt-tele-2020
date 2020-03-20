@@ -27,8 +27,9 @@ void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &passw
         }
         else
         {
-          if(file.print("Moje super Wiffi\n123456789\n"))
+          if(file.println(ssid))
           {
+              file.println(passwd);
               Serial.println("File written");
           }
           else 

@@ -12,9 +12,10 @@ MPU6050 mpu;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
+#define buttonPin 18
 #define FORMAT_SPIFFS_IF_FAILED true
-String ssid = "ESP32";
-String passwd = "test";
+String ssid = "ESP32-Przechylomierz";
+String passwd = "123456789";
 const char* path = "/cfg.xd";
 
 void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
@@ -23,13 +24,25 @@ void onEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventTyp
 
 void setup() 
 {
-    Serial.begin(9600);
+  Serial.begin(9600);
+  delay(100);
 
-    if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
-        Serial.println("SPIFFS Mount Failed");
-    else
-        configurationLoad(SPIFFS,path,ssid,passwd);
-    //Do usunięcia configu przycisk wywołujący: deleteFile(SPIFFS, path);
+  if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
+      Serial.println("SPIFFS Mount Failed");
+
+  pinMode(buttonPin, INPUT);  //Przycisk
+  bool buttonState = digitalRead(buttonPin); 
+  Serial.print("Stan przycisku: ");
+  Serial.println(buttonState);
+  if(buttonState) //Usuniecie konfiguracji
+  {
+    deleteFile(SPIFFS, path);
+    Serial.println("Konfiguracja usunieta, restart systemu.");
+    delay(100);
+    ESP.restart();
+  }
+
+  configurationLoad(SPIFFS,path,ssid,passwd);
 
   if (!mpu.begin())
   {

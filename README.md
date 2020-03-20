@@ -16,6 +16,7 @@
 * Więcej TODO nie pamiętam
 
 ## Wykonywał
+
 * Grzegorz Mrózek
 
 * Dawid Jaraczewski
