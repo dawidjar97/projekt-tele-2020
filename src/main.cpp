@@ -43,7 +43,7 @@ void setup()
       yield();
   }
 
-  pinMode(RESET_BUTTON_PIN, INPUT);
+  pinMode(RESET_BUTTON_PIN, INPUT_PULLDOWN);
   bool buttonState = digitalRead(RESET_BUTTON_PIN);
 
   #if DEBUG
@@ -60,6 +60,7 @@ void setup()
     pinMode(INTERNAL_LED, OUTPUT);
     digitalWrite(INTERNAL_LED, HIGH);
     delay(500);
+    digitalWrite(INTERNAL_LED, LOW);
     ESP.restart();
   }
   
