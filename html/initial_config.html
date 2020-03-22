@@ -3,35 +3,64 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/styles.css">
+        <link rel="stylesheet" href="/static/styles.css">
         <title>Konfiguracja</title>
     </head>
     <body>
         <div class="main-box">
             <h1>Konfiguracja</h1>
             <p>Potrzebujemy od ciebie kilka informacji wymaganych do konfiguracji urządzenia</p>
-            <form>
+            <form id="form" action="initial_config_ready.html" method="post">
                 <div class="form-row">
                     <div class="form-element">
                         <label for="wifi-name">Nazwa Sieci</label>
-                        <input type="text" name="wifi-name" value="ESP32 MyWifi">
+                        <input id="wifi-name" type="text" name="wifi-name" value="" placeholder="Przechylomierz" minlength="5" maxlength="16" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-element">
-                        <label for="wifi-name">Hasło</label>
-                        <input type="password" name="wifi-name" value="ESP32 MyWifi">
+                        <label for="wifi-password">Hasło</label>
+                        <input id="wifi-password" type="password" name="wifi-password" value="" placeholder="Hasło sieci" minlength="8" maxlength="24" required>
                     </div>
                     <div class="form-element">
-                        <label for="wifi-name">Powtórz Hasło</label>
-                        <input type="password" name="wifi-name" value="ESP32 MyWifi">
+                        <label for="wifi-password-repeat">Powtórz Hasło</label>
+                        <input id="wifi-password-repeat" type="password" name="wifi-password-repeat" placeholder="Hasło sieci" value="" minlength="8" maxlength="24" required>
                     </div>
                 </div>
             </form>
             <div class="btn">
-                <a href="#"><img src="/next.svg"></a>
-                <p>Zapisz</p>
+                <a href="#" onclick="trySubmit();"><img src="/static/next.svg"></a>
+                <p id="message">Zapisz</p>
             </div>
         </div>
     </body>
+    <script>
+        const formEl = document.getElementById('form');
+        const wifiName = document.getElementById('wifi-name');
+        const wifiPassword = document.getElementById('wifi-password');
+        const wifiPasswordRepeat = document.getElementById('wifi-password-repeat');
+        const message = document.getElementById('message');
+        
+        function trySubmit() {
+            if(!(wifiName.value.length >= 5 && wifiName.value.length <= 16)) {
+                console.log('WifiName validation');
+                message.textContent = 'Proszę podać prawidłową nazwę sieci';
+                return;
+            }
+
+            if(!(wifiPassword.value.length >= 8 && wifiPassword.value.length <= 24)) {
+                console.log('Password validation');
+                message.textContent = 'Proszę podać prawidłowe hasło';
+                return;
+            }
+
+            if(wifiPassword.value !== wifiPasswordRepeat.value) {
+                console.log('Passwords are not the same');
+                message.textContent = 'Hasła muszą być takie same';
+                return;
+            }
+
+            formEl.submit();
+        }
+    </script>
 </html>

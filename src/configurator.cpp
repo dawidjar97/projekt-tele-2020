@@ -1,66 +1,79 @@
 #include "configurator.h"
+#include "config.h"
 
-void deleteFile(fs::FS &fs, const char * path)//to potem sie wywali do jakeigos cpp
+void deleteFile(fs::FS &fs, const char *path = CONFIG_PATH) //to potem sie wywali do jakeigos cpp
 {
-    Serial.printf("Deleting file: %s\r\n", path);
-    if(fs.remove(path))
+    #if DEBUG
+        Serial.printf("Deleting file: %s\r\n", path);
+    #endif
+
+    if (fs.remove(path))
     {
-        Serial.println("Cfg file deleted");
-    } else 
+        #if DEBUG
+            Serial.println("Cfg file deleted");
+        #endif
+    }
+    else
     {
-        Serial.println("Cfg file delete failed");
+        #if DEBUG
+            Serial.println("Cfg file delete failed");
+        #endif
     }
 }
 
-void configurationLoad(fs::FS &fs, const char * path,String &ssid, String &passwd)
+bool isConfigurationCompleted(fs::FS &fs) 
 {
+    return fs.exists(CONFIG_PATH);
+}
+
+bool saveConfiguration(fs::FS &fs, const String & ssid, const String & password)
+{
+    if(fs.exists(CONFIG_PATH)) {
+        #if DEBUG
+            Serial.println("Config file alredy exists");
+        #endif
+        return false;
+    }
+        
     
-    File file = fs.open(path);
-    if(!file || file.isDirectory()) //Write cfg file
-    {
-        Serial.println("Failed to open file for reading");
-        Serial.println("Making new cfg file");
-        file = fs.open(path, FILE_WRITE);
-        if(!file)
-        {
-            Serial.println("Failed to open file for writing");
-        }
-        else
-        {
-          if(file.println(ssid))
-          {
-              file.println(passwd);
-              Serial.println("File written");
-          }
-          else 
-          {
-              Serial.println("Write failed");
-          }
-        }
+    File file = fs.open(CONFIG_PATH, FILE_WRITE);
+    if(!file || file.isDirectory()) {
+        #if DEBUG
+            Serial.println("Cannot open config file or is directory");
+        #endif
+        return false;
     }
-    else  //Read cfg file
-    {
-        char sign;
-        ssid="";
-        passwd="";
 
-        Serial.println("Read from file:");
+    file.print(ssid); file.print('\n');
+    file.print(password); file.print('\n');
+    file.close();
+    return true;
+}
 
-        while(file.available() && sign!='\n') /* SSID */
-        {
-            sign=file.read();
-            //Serial.write(sign);
-            if(sign!='\n')
-                ssid+=sign;
-        }
-        do /* Password */
-        {
-            sign=file.read();
-            //Serial.write(sign);
-            if(sign!='\n')
-                passwd+=sign;
-        } while (file.available() && sign!='\n');
+bool loadConfiguration(fs::FS &fs, String & ssid, String & password)
+{
+    if(!fs.exists(CONFIG_PATH)) {
+        #if DEBUG
+            Serial.println("Config file doesn't exist");
+        #endif
+        return false;
     }
-    Serial.println("SSID: "+ssid);
-    Serial.println("PASS: "+passwd);
+
+    File file = fs.open(CONFIG_PATH, FILE_READ);
+    if(!file || file.isDirectory()) {
+        #if DEBUG
+            Serial.println("Cannot open config file or is directory");
+        #endif
+        return false;
+    }
+    
+    ssid = file.readStringUntil('\n');
+    password = file.readStringUntil('\n');
+
+    #if DEBUG
+        Serial.print("SSID: "); Serial.println(ssid);
+        Serial.print("Password: "); Serial.println(password);
+    #endif
+
+    return true;
 }

@@ -136,6 +136,10 @@ div.main-box > div.ready-box > p.device_name > a {
     font-weight: 600;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* CANVAS */
 
 div.no-gap {

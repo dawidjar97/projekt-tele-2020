@@ -43,7 +43,7 @@ imageObj.onload = function() {
 
     pitchLayer.add(img);
 };
-imageObj.src = 'car_angle_bg_alt.svg';
+imageObj.src = '/static/car_angle_bg_alt.svg';
 
 var pitchImgLoader = new Image();
 var pitchImg;
@@ -60,7 +60,7 @@ pitchImgLoader.onload = function() {
     pitchImg.offsetY(pitchImg.height() / 2);
     pitchLayer.add(pitchImg);
 };
-pitchImgLoader.src = 'car_pitch.svg';
+pitchImgLoader.src = '/static/car_pitch.svg';
 pitchStage.add(pitchLayer);
 
 /* ROLL */
@@ -110,7 +110,7 @@ image2Obj.onload = function() {
 
     rollLayer.add(img2);
 };
-image2Obj.src = 'car_angle_bg_alt.svg';
+image2Obj.src = '/static/car_angle_bg_alt.svg';
 
 var rollImgLoader = new Image();
 var rollImg;
@@ -127,7 +127,7 @@ rollImgLoader.onload = function() {
     rollImg.offsetY(rollImg.height() / 2);
     rollLayer.add(rollImg);
 };
-rollImgLoader.src = 'car_front.svg';
+rollImgLoader.src = '/static/car_front.svg';
 rollStage.add(rollLayer);
 
 var ws = new WebSocket('ws://192.168.4.1/ws');
