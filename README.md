@@ -9,10 +9,6 @@
 
 * Zasilanie
 
-* Zapisywanie konfiguracji
-
-* Reset konfiguracji na przycisk
-
 * Więcej TODO nie pamiętam
 
 ## Wykonywał
