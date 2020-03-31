@@ -3,13 +3,11 @@
 
 * Posprzątać kod
 
-* Testowanie w terenie czy te kąty działają jak powinny
+* Testowanie w terenie czy te kąty działają jak powinny ✔
 
-* Obudowa
+* Obudowa ✔
 
 * Zasilanie
-
-* Więcej TODO nie pamiętam
 
 ## Wykonywał
 
