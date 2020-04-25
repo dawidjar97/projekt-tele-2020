@@ -5,7 +5,6 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <FS.h>
-
 #include "config.h"
 #include "configurator.h"
 #include "mpu6050.h"
@@ -17,13 +16,14 @@
 #define HTTP_SERVER_PORT 80
 
 #define DEFAULT_SSID "ESP32-Przechylomierz"
-#define DEFAULT_PASSWORD "12345678"
+#define DEFAULT_PASSWORD "123456789"
 
 MPU6050 mpu;
 AsyncWebServer server(HTTP_SERVER_PORT);
 AsyncWebSocket ws(WEBSOCKET_PATH);
 
 bool espReboot = false;
+bool buttonState = false;
 
 void setup()
 {
@@ -44,7 +44,7 @@ void setup()
   }
 
   pinMode(RESET_BUTTON_PIN, INPUT_PULLDOWN);
-  bool buttonState = digitalRead(RESET_BUTTON_PIN);
+  buttonState = digitalRead(RESET_BUTTON_PIN);
 
   #if DEBUG
     Serial.print("Stan przycisku: "); Serial.println(buttonState);
@@ -64,14 +64,16 @@ void setup()
     ESP.restart();
   }
   
-  if(isConfigurationCompleted(SPIFFS)) {
+  if(isConfigurationCompleted(SPIFFS)) 
+  {
     #if DEBUG
-      Serial.println("Well yes");
+      Serial.println("Konfiguracja zaladowana");
     #endif
 
     String ssid, password;
 
-    if(!loadConfiguration(SPIFFS, ssid, password)) {
+    if(!loadConfiguration(SPIFFS, ssid, password)) 
+    {
       #if DEBUG
         Serial.println("Something went wrong loading config file. Erasing config file");
         delay(500);
@@ -83,19 +85,24 @@ void setup()
 
     WiFi.softAP(ssid.c_str(), password.c_str());
 
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) 
+    {
       request->send(SPIFFS, "/index.html");
     });
 
-    server.on("/delete-config", HTTP_GET, [](AsyncWebServerRequest *request) {
+    server.on("/delete-config", HTTP_GET, [](AsyncWebServerRequest *request) 
+    {
       deleteFile(SPIFFS, CONFIG_PATH);
       request->send(200, String(), "RIP AND TEAR UNTIL ITS ERASED");
       espReboot = true;
     });
 
-  } else { //BUT
+  } 
+  else
+  { //BUT
     #if DEBUG
-      Serial.println("Actually no");
+      Serial.println("Nie zaladowana konfiguracji");
+      Serial.println(DEFAULT_PASSWORD);
     #endif
 
     WiFi.softAP(DEFAULT_SSID, DEFAULT_PASSWORD);
@@ -147,10 +154,11 @@ void setup()
   server.addHandler(&ws);
   server.serveStatic("/static/", SPIFFS, "/static/");
   server.begin();
+  buttonState=false;
 }
 
 void loop()
-{
+{ 
   mpu.readData();
   MPU6050_Data mpuData = mpu.getCurrent();
 
@@ -167,6 +175,20 @@ void loop()
   };
 
   ws.binaryAll(data, 8);
+
+  /* Reset maksymalnych wartości wychyleń */
+  if(digitalRead(RESET_BUTTON_PIN))
+  {
+    if(!buttonState)
+    {
+      Serial.println("Wcisnieto RESET_BUTTON");
+      buttonState=1;
+    }
+  }
+  else
+  {
+    buttonState=0;
+  }
 
   /* Minimalny delay przy którym kolejka webSocketa jeszcze się nie wypełnia */
   delay(60);
