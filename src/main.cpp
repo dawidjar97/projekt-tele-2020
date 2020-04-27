@@ -16,7 +16,7 @@
 #define HTTP_SERVER_PORT 80
 
 #define DEFAULT_SSID "ESP32-Przechylomierz"
-#define DEFAULT_PASSWORD "123456789"
+#define DEFAULT_PASSWORD "12345678"
 
 MPU6050 mpu;
 AsyncWebServer server(HTTP_SERVER_PORT);
@@ -67,7 +67,7 @@ void setup()
   if(isConfigurationCompleted(SPIFFS)) 
   {
     #if DEBUG
-      Serial.println("Konfiguracja zaladowana");
+      Serial.println("Konfiguracja zaladowano");
     #endif
 
     String ssid, password;
@@ -169,19 +169,14 @@ void loop()
   uint8_t * pitch = (uint8_t *)&(p);
   uint8_t * roll = (uint8_t *)&(r);
 
-  uint8_t data[8] = {
-    pitch[0], pitch[1], pitch[2], pitch[3],
-    roll[0], roll[1], roll[2], roll[3]
-  };
-
-  ws.binaryAll(data, 8);
-
   /* Reset maksymalnych wartości wychyleń */
   if(digitalRead(RESET_BUTTON_PIN))
   {
     if(!buttonState)
     {
-      Serial.println("Wcisnieto RESET_BUTTON");
+      #if DEBUG
+        Serial.println("Wcisnieto RESET_BUTTON");
+      #endif
       buttonState=1;
     }
   }
@@ -189,6 +184,14 @@ void loop()
   {
     buttonState=0;
   }
+
+  uint8_t data[9] = {
+    pitch[0], pitch[1], pitch[2], pitch[3],
+    roll[0], roll[1], roll[2], roll[3],
+    (uint8_t) buttonState
+  };
+
+  ws.binaryAll(data, 9);
 
   /* Minimalny delay przy którym kolejka webSocketa jeszcze się nie wypełnia */
   delay(60);

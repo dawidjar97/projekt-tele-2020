@@ -144,6 +144,10 @@ ws.onmessage = (event) => {
     // Wartości są odwrócone
     let pitch = -Math.round(dv.getInt32(0, true)/10)/10;
     let roll =  -Math.round(dv.getInt32(4, true)/10)/10;
+    let reset = dv.getUint8(8, true);
+
+    console.log("Reset: ",reset);
+    document.getElementById("test").textContent = reset;
 
     pitchImg.rotation(pitch);
     rollImg.rotation(roll);
