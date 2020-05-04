@@ -130,32 +130,52 @@ rollImgLoader.onload = function() {
 };
 rollImgLoader.src = '/static/car_front.svg';
 
-
 var maxPitch = new Konva.Text({
-    x: 140,
+    x: 150,
     y: 250,
     text: '00°',
     fontSize: 16,
     fontFamily: 'sans-serif',
     fill: 'black'
 });
-
 maxPitch.offsetX(maxPitch.width() / 2);
 maxPitch.offsetY(maxPitch.height());
 pitchLayer.add(maxPitch);
 
+var maxPText = new Konva.Text({
+    x: 138,
+    y: 232,
+    text: 'MAX:',
+    fontSize: 10,
+    fontFamily: 'sans-serif',
+    fill: '#232327'
+});
+maxPText.offsetY(maxPText.height());
+pitchLayer.add(maxPText);
+
+
 var maxRoll = new Konva.Text({
-    x: 140,
+    x: 150,
     y: 250,
     text: '00°',
     fontSize: 16,
     fontFamily: 'sans-serif',
     fill: 'black'
 });
-
 maxRoll.offsetX(maxRoll.width() / 2);
 maxRoll.offsetY(maxRoll.height());
 rollLayer.add(maxRoll);
+
+var maxRText = new Konva.Text({
+    x: 138,
+    y: 232,
+    text: 'MAX:',
+    fontSize: 10,
+    fontFamily: 'sans-serif',
+    fill: '#232327'
+});
+maxRText.offsetY(maxRText.height());
+rollLayer.add(maxRText);
 
 rollStage.add(rollLayer);
 pitchStage.add(pitchLayer);
