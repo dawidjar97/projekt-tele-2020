@@ -35,7 +35,6 @@ bool saveConfiguration(fs::FS &fs, const String & ssid, const String & password)
         return false;
     }
         
-    
     File file = fs.open(CONFIG_PATH, FILE_WRITE);
     if(!file || file.isDirectory()) {
         #if DEBUG
