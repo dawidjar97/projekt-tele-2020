@@ -14,6 +14,7 @@ var pitchAngle = new Konva.Text({
     fontFamily: 'sans-serif',
     fill: 'black'
 });
+
 pitchAngle.offsetX(pitchAngle.width() / 2);
 pitchAngle.offsetY(pitchAngle.height());
 pitchLayer.add(pitchAngle);
@@ -61,7 +62,7 @@ pitchImgLoader.onload = function() {
     pitchLayer.add(pitchImg);
 };
 pitchImgLoader.src = '/static/car_pitch.svg';
-pitchStage.add(pitchLayer);
+
 
 /* ROLL */
 
@@ -128,10 +129,62 @@ rollImgLoader.onload = function() {
     rollLayer.add(rollImg);
 };
 rollImgLoader.src = '/static/car_front.svg';
+
+var maxPitch = new Konva.Text({
+    x: 150,
+    y: 250,
+    text: '00°',
+    fontSize: 16,
+    fontFamily: 'sans-serif',
+    fill: 'black'
+});
+maxPitch.offsetX(maxPitch.width() / 2);
+maxPitch.offsetY(maxPitch.height());
+pitchLayer.add(maxPitch);
+
+var maxPText = new Konva.Text({
+    x: 138,
+    y: 232,
+    text: 'MAX:',
+    fontSize: 10,
+    fontFamily: 'sans-serif',
+    fill: '#232327'
+});
+maxPText.offsetY(maxPText.height());
+pitchLayer.add(maxPText);
+
+
+var maxRoll = new Konva.Text({
+    x: 150,
+    y: 250,
+    text: '00°',
+    fontSize: 16,
+    fontFamily: 'sans-serif',
+    fill: 'black'
+});
+maxRoll.offsetX(maxRoll.width() / 2);
+maxRoll.offsetY(maxRoll.height());
+rollLayer.add(maxRoll);
+
+var maxRText = new Konva.Text({
+    x: 138,
+    y: 232,
+    text: 'MAX:',
+    fontSize: 10,
+    fontFamily: 'sans-serif',
+    fill: '#232327'
+});
+maxRText.offsetY(maxRText.height());
+rollLayer.add(maxRText);
+
 rollStage.add(rollLayer);
+pitchStage.add(pitchLayer);
 
 var ws = new WebSocket('ws://192.168.4.1/ws');
 ws.binaryType = 'arraybuffer';
+
+var maxP = 0;
+var maxR = 0;
 
 ws.onmessage = (event) => {
     rollImg.zIndex(3);
@@ -146,9 +199,6 @@ ws.onmessage = (event) => {
     let roll =  -Math.round(dv.getInt32(4, true)/10)/10;
     let reset = dv.getUint8(8, true);
 
-    console.log("Reset: ",reset);
-    document.getElementById("test").textContent = reset;
-
     pitchImg.rotation(pitch);
     rollImg.rotation(roll);
 
@@ -159,6 +209,12 @@ ws.onmessage = (event) => {
 
     pitch = pad(Math.min(Math.abs(Math.round(pitch)), 90), 2);
     roll = pad(Math.min(Math.abs(Math.round(roll)), 90), 2);
+
+    if(pitch > maxP || reset) maxP = pitch;
+    if(roll > maxR || reset) maxR = roll;
+
+    maxPitch.setAttr('text', `${maxP}°`);
+    maxRoll.setAttr('text', `${maxR}°`);
 
     pitchAngle.setAttr('text', pitch);
     rollAngle.setAttr('text', roll);
