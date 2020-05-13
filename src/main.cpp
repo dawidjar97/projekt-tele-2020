@@ -67,7 +67,7 @@ void setup()
   if(isConfigurationCompleted(SPIFFS)) 
   {
     #if DEBUG
-      Serial.println("Konfiguracja zaladowano");
+      Serial.println("Konfiguracja zaladowana");
     #endif
 
     String ssid, password;

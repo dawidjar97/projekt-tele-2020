@@ -1,7 +1,7 @@
 #include "configurator.h"
 #include "config.h"
 
-void deleteFile(fs::FS &fs, const char *path = CONFIG_PATH) //to potem sie wywali do jakeigos cpp
+void deleteFile(fs::FS &fs, const char *path = CONFIG_PATH)
 {
     #if DEBUG
         Serial.printf("Deleting file: %s\r\n", path);
